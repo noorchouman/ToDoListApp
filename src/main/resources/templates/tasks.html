@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>To-Do List</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<div class="card">
+    <h1>NOOR'S TO DO LIST</h1>
+    <form th:action="@{/tasks}" method="post" class="top-form">
+        <input type="text" name="description" placeholder="New Task" required>
+        <button type="submit">Add Task</button>
+        
+    </form>
+    <table>
+        <thead>
+        <tr>
+            <th>Task Description</th>
+            <th>Status</th>
+            <th>Created Date</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="task : ${tasks}">
+            <td>
+                <span th:text="${task.name}"
+                      th:style="${task.completed} ? 'text-decoration: line-through;' : ''"></span>
+            </td>
+            <td th:text="${task.completed} ? 'done' : 'pending'"></td>
+            <td th:text="${#temporals.format(task.createdDate, 'dd/MM/yyyy')}"></td>
+            <td>
+                <a th:if="${!task.completed}" th:href="@{'/complete/' + ${task.id}}" title="Mark complete">✓</a>
+                <a th:href="@{'/delete/' + ${task.id}}" title="Delete">&#128465;</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
